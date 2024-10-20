@@ -1,0 +1,68 @@
+﻿@model IEnumerable<WhiteLagoon.Domain.Entities.Villa>
+
+@{
+    ViewData["Title"] = "Villa List";
+}
+
+<div class="w-100 card p-4 p-4 border-0">
+    <div class="card-header bg-success bg-gradient py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Villa List</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4 border">
+        <div class="row pb-3">
+            <div class="col-6 offset-6 text-end">
+                <a asp-action="Create" class="btn btn-secondary">
+                    <i class="bi bi-plus-circle"></i> Create New Villa
+                </a>
+            </div>
+        </div>
+
+        <table class="table-bordered table-striped table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Price)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Sqft)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Occupancy)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Sqft)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Occupancy)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

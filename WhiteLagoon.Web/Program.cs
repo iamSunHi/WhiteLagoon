@@ -11,6 +11,10 @@ namespace WhiteLagoon.Web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.Configure<RouteOptions>(options =>
+            {
+                options.LowercaseUrls = true;
+            });
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
