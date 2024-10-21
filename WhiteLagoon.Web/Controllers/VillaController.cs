@@ -54,5 +54,45 @@ namespace WhiteLagoon.Web.Controllers
             }
             return View(villa);
         }
+
+        public IActionResult Edit(int id)
+        {
+            var villa = _context.Villas.FirstOrDefault(v => v.Id == id);
+            if (villa is null)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+            return View(villa);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Villa villa)
+        {
+            if (villa.Name == villa.Description)
+            {
+                ModelState.AddModelError("Description", "Description cannot be the same as Name");
+            }
+            if (ModelState.IsValid && villa.Id > 0)
+            {
+                villa.UpdatedDate = DateTime.Now;
+
+                var transaction = _context.Database.BeginTransaction();
+
+                try
+                {
+                    _context.Villas.Update(villa);
+                    _context.SaveChanges();
+
+                    transaction.Commit();
+
+                    return RedirectToAction("Index");
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                }
+            }
+            return View(villa);
+        }
     }
 }
