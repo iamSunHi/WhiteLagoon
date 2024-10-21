@@ -45,10 +45,12 @@ namespace WhiteLagoon.Web.Controllers
 
                     transaction.Commit();
 
+                    TempData["success"] = "Villa created successfully.";
                     return RedirectToAction("Index");
                 }
                 catch (Exception)
                 {
+                    TempData["error"] = "An error occurred while creating the villa.";
                     transaction.Rollback();
                 }
             }
@@ -85,10 +87,55 @@ namespace WhiteLagoon.Web.Controllers
 
                     transaction.Commit();
 
+                    TempData["success"] = "Villa updated successfully.";
                     return RedirectToAction("Index");
                 }
                 catch (Exception)
                 {
+                    TempData["error"] = "An error occurred while updating the villa.";
+                    transaction.Rollback();
+                }
+            }
+            return View(villa);
+        }
+
+        public IActionResult Delete(int id)
+        {
+            var villa = _context.Villas.FirstOrDefault(v => v.Id == id);
+            if (villa is null)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+            return View(villa);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Villa villa)
+        {
+            if (villa.Id > 0)
+            {
+                var villaFromDb = _context.Villas.FirstOrDefault(v => v.Id == villa.Id);
+
+                if (villaFromDb is null)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
+
+                var transaction = _context.Database.BeginTransaction();
+
+                try
+                {
+                    _context.Villas.Remove(villaFromDb);
+                    _context.SaveChanges();
+
+                    transaction.Commit();
+
+                    TempData["success"] = "Villa deleted successfully.";
+                    return RedirectToAction("Index");
+                }
+                catch (Exception)
+                {
+                    TempData["error"] = "An error occurred while deleting the villa.";
                     transaction.Rollback();
                 }
             }
