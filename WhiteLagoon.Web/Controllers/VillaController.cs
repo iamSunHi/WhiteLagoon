@@ -27,6 +27,10 @@ namespace WhiteLagoon.Web.Controllers
         [HttpPost]
         public IActionResult Create(Villa villa)
         {
+            if (villa.Name == villa.Description)
+            {
+                ModelState.AddModelError("Description", "Description cannot be the same as Name");
+            }
             if (ModelState.IsValid)
             {
                 villa.CreatedDate = DateTime.Now;
